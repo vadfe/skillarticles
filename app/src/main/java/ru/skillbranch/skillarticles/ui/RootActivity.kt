@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toolbar
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
@@ -64,6 +65,30 @@ class RootActivity : AppCompatActivity() {
     private fun renderUi(data: ArticleState) {
         btn_settings.isChecked = data.isShowMenu
         if(data.isShowMenu) submenu.open() else submenu.close()
+
+        btn_like.isChecked = data.isLike
+        btn_bookmark.isChecked = data.isBookmark
+
+        switch_mode.isChecked = data.isDarkMode
+        delegate.localNightMode =
+            if(data.isDarkMode) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+
+        if(data.isBigText){
+            tv_text_content.textSize = 18f
+            btn_text_up.isChecked = true
+            btn_text_down.isChecked = false
+        }else{
+            tv_text_content.textSize = 14f
+            btn_text_up.isChecked = false
+            btn_text_down.isChecked = true
+        }
+
+        tv_text_content.text = if(data.isLoadingContent) "loading" else data.content.first() as String
+
+        toolbar.title = data.title ?: "loading"
+        toolbar.subtitle = data.category ?: "loading"
+
+        if(data.categoryIcon!= null) toolbar.logo = getDrawable(data.categoryIcon as Int)
     }
 
     private fun setupSubmenu(){
