@@ -77,6 +77,8 @@ abstract class BaseViewModel<T>(initState: T) : ViewModel() {
         }
     }
 
+    //abstract fun handleBookmark()
+
 }
 
 class ViewModelFactory(private val params: String) : ViewModelProvider.Factory {
