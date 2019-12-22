@@ -2,9 +2,20 @@ package ru.skillbranch.skillarticles.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.PersistableBundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
-import android.widget.Toolbar
+import android.widget.LinearLayout
+import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_root.*
@@ -19,6 +30,7 @@ import ru.skillbranch.skillarticles.viewmodels.ViewModelFactory
 
 class RootActivity : AppCompatActivity() {
     private lateinit var viewModel:ArticleViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
@@ -36,6 +48,59 @@ class RootActivity : AppCompatActivity() {
 
     }
 
+    private var isSearchOpen = false
+    private var searchValue = ""
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isSearchOpen", isSearchOpen)
+        outState.putString("searchValue",searchValue)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        isSearchOpen = savedInstanceState.getBoolean("isSearchOpen")
+        searchValue = savedInstanceState.getString("searchValue")?: ""
+        Log.w("T","onRestoreInstanceState searchValue="+searchValue)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_search, menu)
+        val searchItem = menu?.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = "строка поиска"
+        if(isSearchOpen)
+            searchItem.expandActionView()
+        searchView.setQuery(searchValue, false)
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                isSearchOpen = true
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                isSearchOpen = false
+                return true
+            }
+        })
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                viewModel.handleSearch(p0)
+                searchValue = p0?:""
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                viewModel.handleSearch(p0)
+                searchValue = p0?:""
+                return true
+            }
+
+        })
+
+
+
+        return super.onCreateOptionsMenu(menu)
+    }
     private fun renderNotification(notify: Notify){
         val snackbar:Snackbar = Snackbar.make(coordinator_conrainer, notify.message, Snackbar.LENGTH_LONG)
             .setAnchorView(bottombar)
@@ -109,12 +174,12 @@ class RootActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val logo: ImageView? = if(toolbar.childCount > 2) toolbar.getChildAt(2) as ImageView else null
         logo?.scaleType = ImageView.ScaleType.CENTER_CROP
-/*        val lp: Toolbar.LayoutParams? = logo?.layoutParams as Toolbar.LayoutParams
+        val lp: Toolbar.LayoutParams? = logo?.layoutParams as Toolbar.LayoutParams
         lp?.let{
             it.width = this.dpToIntPx(40)
             it.height = this.dpToIntPx(40)
             it.marginEnd = this.dpToIntPx(16)
             logo.layoutParams = it
-        }*/
+        }
     }
 }

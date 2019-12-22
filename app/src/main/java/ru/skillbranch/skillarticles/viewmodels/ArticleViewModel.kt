@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.viewmodels
 
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import ru.skillbranch.skillarticles.data.ArticleData
@@ -9,7 +10,7 @@ import ru.skillbranch.skillarticles.extensions.data.toAppSettings
 import ru.skillbranch.skillarticles.extensions.data.toArticlePersonalInfo
 import ru.skillbranch.skillarticles.extensions.format
 
-class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleState>(ArticleState()) {
+class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleState>(ArticleState()), IArticleViewModel {
 
 
     private val repository = ArticleRepository
@@ -50,36 +51,43 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         }
     }
 
-    private fun getArticleContent():LiveData<List<Any>?>{
+    override fun getArticleContent(): LiveData<List<Any>?> {
         return repository.loadArticleContent(articleId)
     }
 
-    private fun getArticleData():LiveData<ArticleData?>{
+    override fun getArticleData(): LiveData<ArticleData?> {
         return repository.getArticle(articleId)
     }
 
-    private fun getArticlePersonalInfo():LiveData<ArticlePersonalInfo?>{
+    override fun getArticlePersonalInfo(): LiveData<ArticlePersonalInfo?> {
         return repository.loadArticlePersonalInfo(articleId)
     }
 
-    fun handleNightMode() {
+    override fun handleNightMode() {
         val settings = currentState.toAppSettings()
         repository.updateSettings(settings.copy(isDarkMode = !settings.isDarkMode))
     }
 
-    fun handleUpText() {
+    override fun handleUpText() {
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = true))
     }
 
-    fun handleDownText() {
+    override fun handleDownText() {
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = false))
     }
 
-    fun handleBookmark() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun handleBookmark() {
+        val toogleBookmark:() -> Unit ={
+            val info: ArticlePersonalInfo = currentState.toArticlePersonalInfo()
+            repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
+        }
+        toogleBookmark()
+        val msg:Notify = if(currentState.isBookmark) Notify.TextMessage("Add to bookmark")
+        else Notify.TextMessage("Delete from bookmark")
+        notify(msg)
     }
 
-    fun handleLike() {
+    override fun handleLike() {
         val toogleLike :() -> Unit ={
             val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
             repository.updateArticlePersonalInfo(info.copy(isLike = !info.isLike))
@@ -96,12 +104,20 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         notify(msg)
     }
 
-    fun handleShare() {
+    override fun handleShare() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun handleToggleMenu() {
+    override fun handleToggleMenu() {
         updateState { it.copy(isShowMenu = !it.isShowMenu) }
+    }
+
+    override fun handleSearchMode(isSearch: Boolean) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun handleSearch(query: String?) {
+        Log.d("T", query)
     }
 
 
