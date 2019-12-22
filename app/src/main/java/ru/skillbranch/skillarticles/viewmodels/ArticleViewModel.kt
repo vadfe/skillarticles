@@ -105,7 +105,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun handleShare() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("T", "handleShare")
     }
 
     override fun handleToggleMenu() {
