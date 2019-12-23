@@ -83,8 +83,8 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
             repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
         }
         toogleBookmark()
-        val msg:Notify = if(currentState.isBookmark) Notify.TextMessage("Add to bookmark")
-        else Notify.TextMessage("Delete from bookmark")
+        val msg:Notify = if(currentState.isBookmark) Notify.TextMessage("Add to bookmarks")
+        else Notify.TextMessage("Remove from bookmarks")
         notify(msg)
     }
 
@@ -97,7 +97,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         val msg:Notify = if(currentState.isLike) Notify.TextMessage("Mark is liked")
         else{
             Notify.ActionMessage(
-                "Don`t like anymore",
+                "Don`t like it anymore",
                 "No, still like it",
                 toogleLike
             )
@@ -107,6 +107,8 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
 
     override fun handleShare() {
         Log.d("T", "handleShare")
+        val msg:Notify = Notify.ErrorMessage("Share is not implemented","OK",null)
+        notify(msg)
     }
 
     override fun handleToggleMenu() {
