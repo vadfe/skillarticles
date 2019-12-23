@@ -23,7 +23,8 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
                 title = article.title,
                 category = article.category,
                 categoryIcon = article.categoryIcon,
-                date = article.date.format()
+                date = article.date.format(),
+                author = article.author?:null
             )
         }
 
@@ -141,7 +142,7 @@ data class ArticleState(
     val category: String? = null,
     val categoryIcon: Any? = null,
     val date: String? = null,
-    val author: String? = null,
+    val author: Any? = null,
     val posted: String? = null,
     val content: List<Any> = emptyList(),
     val reviews: List<Any> = emptyList()
