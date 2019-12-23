@@ -24,7 +24,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
                 category = article.category,
                 categoryIcon = article.categoryIcon,
                 date = article.date.format(),
-                author = article.author?:null
+                author = article.author
             )
         }
 
@@ -116,11 +116,13 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun handleSearchMode(isSearch: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val msg:Notify = Notify.ErrorMessage("Search mode is not implemented","OK",null)
+        notify(msg)
     }
 
     override fun handleSearch(query: String?) {
-        Log.d("T", query)
+        val msg:Notify = Notify.ErrorMessage("Search is not implemented","OK",null)
+        notify(msg)
     }
 
 
