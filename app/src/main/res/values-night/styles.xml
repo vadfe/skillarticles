@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!-- Base application theme. -->
@@ -20,6 +21,13 @@
         <item name="colorOnSurface">@color/color_on_surface</item>
 
         <item name="snackbarStyle">@style/CustomSnackbar</item>
+    </style>
+
+    <style name="ArticleBarsTheme1" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorPrimary">@color/color_article_bar</item>
+        <item name="colorOnPrimary">@color/color_on_article_bar</item>
+        <item name="colorSurface">@color/color_article_bar</item>
+        <item name="colorControlNormal">@color/color_on_article_bar</item>
     </style>
 
     <style name="ArticleToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
@@ -46,5 +54,4 @@
         <item name="colorSurface">@color/color_article_bar</item>
         <item name="colorControlNormal">@color/color_on_article_bar</item>
     </style>
-
 </resources>
