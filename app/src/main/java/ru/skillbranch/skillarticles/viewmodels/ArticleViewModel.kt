@@ -19,7 +19,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         subscribeOnDataSource(getArticleData()){article, state ->
             article ?: return@subscribeOnDataSource null
             state.copy(
-                sharedLink = article.shareLink,
+                shareLink = article.shareLink,
                 title = article.title,
                 category = article.category,
                 categoryIcon = article.categoryIcon,
@@ -136,12 +136,12 @@ data class ArticleState(
     val searchQuery: String? = null,
     val searchResuts: List<Pair<Int, Int>> = emptyList(),
     val searchPosition: Int = 0,
-    val sharedLink: String? = null,
+    val shareLink: String? = null,
     val title: String? = null,
     val category: String? = null,
     val categoryIcon: Any? = null,
     val date: String? = null,
-    val autor: String? = null,
+    val author: String? = null,
     val posted: String? = null,
     val content: List<Any> = emptyList(),
     val reviews: List<Any> = emptyList()
