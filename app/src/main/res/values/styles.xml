@@ -45,6 +45,8 @@
         <item name="colorOnPrimary">@color/color_on_article_bar</item>
         <item name="colorSurface">@color/color_article_bar</item>
         <item name="colorControlNormal">@color/color_on_article_bar</item>
+        <item name="hideOnScroll">true</item>
+        <item name="layout_scrollFlags">scroll|enterAlways</item>
     </style>
 
 </resources>
