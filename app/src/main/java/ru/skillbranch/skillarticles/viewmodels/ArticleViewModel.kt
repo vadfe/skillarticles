@@ -19,11 +19,12 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         subscribeOnDataSource(getArticleData()){article, state ->
             article ?: return@subscribeOnDataSource null
             state.copy(
-                sharedLink = article.shareLink,
+                shareLink = article.shareLink,
                 title = article.title,
                 category = article.category,
                 categoryIcon = article.categoryIcon,
-                date = article.date.format()
+                date = article.date.format(),
+                author = article.author
             )
         }
 
@@ -82,8 +83,8 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
             repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
         }
         toogleBookmark()
-        val msg:Notify = if(currentState.isBookmark) Notify.TextMessage("Add to bookmark")
-        else Notify.TextMessage("Delete from bookmark")
+        val msg:Notify = if(currentState.isBookmark) Notify.TextMessage("Add to bookmarks")
+        else Notify.TextMessage("Remove from bookmarks")
         notify(msg)
     }
 
@@ -96,7 +97,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         val msg:Notify = if(currentState.isLike) Notify.TextMessage("Mark is liked")
         else{
             Notify.ActionMessage(
-                "Don`t like anymore",
+                "Don`t like it anymore",
                 "No, still like it",
                 toogleLike
             )
@@ -106,6 +107,8 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
 
     override fun handleShare() {
         Log.d("T", "handleShare")
+        val msg:Notify = Notify.ErrorMessage("Share is not implemented","OK",null)
+        notify(msg)
     }
 
     override fun handleToggleMenu() {
@@ -113,11 +116,13 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun handleSearchMode(isSearch: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val msg:Notify = Notify.ErrorMessage("Search mode is not implemented","OK",null)
+        notify(msg)
     }
 
     override fun handleSearch(query: String?) {
-        Log.d("T", query)
+        val msg:Notify = Notify.ErrorMessage("Search is not implemented","OK",null)
+        notify(msg)
     }
 
 
@@ -136,12 +141,12 @@ data class ArticleState(
     val searchQuery: String? = null,
     val searchResuts: List<Pair<Int, Int>> = emptyList(),
     val searchPosition: Int = 0,
-    val sharedLink: String? = null,
+    val shareLink: String? = null,
     val title: String? = null,
     val category: String? = null,
     val categoryIcon: Any? = null,
     val date: String? = null,
-    val autor: String? = null,
+    val author: Any? = null,
     val posted: String? = null,
     val content: List<Any> = emptyList(),
     val reviews: List<Any> = emptyList()

@@ -102,7 +102,7 @@ class RootActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
     private fun renderNotification(notify: Notify){
-        val snackbar:Snackbar = Snackbar.make(coordinator_conrainer, notify.message, Snackbar.LENGTH_LONG)
+        val snackbar:Snackbar = Snackbar.make(coordinator_container, notify.message, Snackbar.LENGTH_LONG)
             .setAnchorView(bottombar)
             .setActionTextColor(getColor(R.color.color_accent_dark))
         when(notify){

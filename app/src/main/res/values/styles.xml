@@ -22,6 +22,13 @@
         <item name="snackbarStyle">@style/CustomSnackbar</item>
     </style>
 
+    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorPrimary">@color/color_article_bar</item>
+        <item name="colorOnPrimary">@color/color_on_article_bar</item>
+        <item name="colorSurface">@color/color_article_bar</item>
+        <item name="colorControlNormal">@color/color_on_article_bar</item>
+    </style>
+
     <style name="ArticleToolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
@@ -38,15 +45,6 @@
 
     <style name="CustomSnackbar" parent="Widget.MaterialComponents.Snackbar">
         <item name="layout_insetEdge">bottom</item>
-    </style>
-
-    <style name="ArticleBarsTheme" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="colorPrimary">@color/color_article_bar</item>
-        <item name="colorOnPrimary">@color/color_on_article_bar</item>
-        <item name="colorSurface">@color/color_article_bar</item>
-        <item name="colorControlNormal">@color/color_on_article_bar</item>
-        <item name="hideOnScroll">true</item>
-        <item name="layout_scrollFlags">scroll|enterAlways</item>
     </style>
 
 </resources>
