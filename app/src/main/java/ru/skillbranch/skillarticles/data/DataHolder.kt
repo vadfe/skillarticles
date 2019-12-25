@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -50,6 +51,7 @@ object LocalDataHolder {
 
     fun updateArticlePersonalInfo(info: ArticlePersonalInfo) {
         articleInfo.value = info
+        Log.w("T", "updateArticlePersonalInfo isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
@@ -90,7 +92,9 @@ data class ArticleData(
 
 data class ArticlePersonalInfo(
     val isLike: Boolean = false,
-    val isBookmark: Boolean = false
+    val isBookmark: Boolean = false,
+    val isSearch: Boolean = false,
+    val searchQuery: String? = null
 )
 
 data class AppSettings(

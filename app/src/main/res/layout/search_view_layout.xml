@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:inputType="text"
     android:maxWidth="9999dp"
+    android:theme="@style/ArticleBarsTheme"
     >
 
 </androidx.appcompat.widget.SearchView>

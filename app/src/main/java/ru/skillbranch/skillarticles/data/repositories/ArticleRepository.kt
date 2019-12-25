@@ -1,5 +1,6 @@
 package ru.skillbranch.skillarticles.data.repositories
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import ru.skillbranch.skillarticles.data.*
 
@@ -24,6 +25,7 @@ object ArticleRepository {
     }
 
     fun updateArticlePersonalInfo(info: ArticlePersonalInfo) {
+        Log.w("T", "handleSearchMode isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
         local.updateArticlePersonalInfo(info)
     }
 }

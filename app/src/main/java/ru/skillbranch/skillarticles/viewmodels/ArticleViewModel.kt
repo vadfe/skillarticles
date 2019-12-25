@@ -53,31 +53,38 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun getArticleContent(): LiveData<List<Any>?> {
+        Log.w("T", "getArticleContent")
         return repository.loadArticleContent(articleId)
     }
 
     override fun getArticleData(): LiveData<ArticleData?> {
+        Log.w("T", "getArticleData")
         return repository.getArticle(articleId)
     }
 
     override fun getArticlePersonalInfo(): LiveData<ArticlePersonalInfo?> {
+        Log.w("T", "getArticlePersonalInfo")
         return repository.loadArticlePersonalInfo(articleId)
     }
 
     override fun handleNightMode() {
+        Log.w("T", "handleNightMode")
         val settings = currentState.toAppSettings()
         repository.updateSettings(settings.copy(isDarkMode = !settings.isDarkMode))
     }
 
     override fun handleUpText() {
+        Log.w("T", "handleUpText")
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = true))
     }
 
     override fun handleDownText() {
+        Log.w("T", "handleDownText")
         repository.updateSettings(currentState.toAppSettings().copy(isBigText = false))
     }
 
     override fun handleBookmark() {
+        Log.w("T", "handleBookmark")
         val toogleBookmark:() -> Unit ={
             val info: ArticlePersonalInfo = currentState.toArticlePersonalInfo()
             repository.updateArticlePersonalInfo(info.copy(isBookmark = !info.isBookmark))
@@ -89,9 +96,11 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun handleLike() {
+        Log.w("T", "handleLike")
         val toogleLike :() -> Unit ={
             val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
             repository.updateArticlePersonalInfo(info.copy(isLike = !info.isLike))
+
         }
         toogleLike()
         val msg:Notify = if(currentState.isLike) Notify.TextMessage("Mark is liked")
@@ -106,7 +115,7 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
     }
 
     override fun handleShare() {
-        Log.d("T", "handleShare")
+        Log.w("T", "handleShare")
         val msg:Notify = Notify.ErrorMessage("Share is not implemented","OK",null)
         notify(msg)
     }
@@ -115,14 +124,23 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         updateState { it.copy(isShowMenu = !it.isShowMenu) }
     }
 
-    override fun handleSearchMode(isSearch: Boolean) {
-        val msg:Notify = Notify.ErrorMessage("Search mode is not implemented","OK",null)
-        notify(msg)
+    override fun handleSearchMode(_isSearch: Boolean) {
+        val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
+        Log.w("T", "handleSearchMode isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
+        repository.updateArticlePersonalInfo(info.copy(isSearch = _isSearch))
+        /*val msg:Notify = Notify.ErrorMessage("Search mode is not implemented","OK",null)
+        notify(msg)*/
+
     }
 
     override fun handleSearch(query: String?) {
-        val msg:Notify = Notify.ErrorMessage("Search is not implemented","OK",null)
-        notify(msg)
+
+        val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
+        Log.w("T", "handleSearch isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
+        repository.updateArticlePersonalInfo(info.copy(searchQuery = query))
+
+        /*val msg:Notify = Notify.ErrorMessage("Search is not implemented","OK",null)
+        notify(msg)*/
     }
 
 

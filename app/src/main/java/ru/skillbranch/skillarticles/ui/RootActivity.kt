@@ -30,7 +30,8 @@ import ru.skillbranch.skillarticles.viewmodels.ViewModelFactory
 
 class RootActivity : AppCompatActivity() {
     private lateinit var viewModel:ArticleViewModel
-
+    private lateinit var searchView:SearchView
+    private  var searchItem:MenuItem? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
@@ -48,8 +49,9 @@ class RootActivity : AppCompatActivity() {
 
     }
 
-    private var isSearchOpen = false
-    private var searchValue = ""
+   // private var isSearchOpen = false
+   // private var searchValue = ""
+    /*
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean("isSearchOpen", isSearchOpen)
@@ -61,37 +63,51 @@ class RootActivity : AppCompatActivity() {
         isSearchOpen = savedInstanceState.getBoolean("isSearchOpen")
         searchValue = savedInstanceState.getString("searchValue")?: ""
         Log.w("T","onRestoreInstanceState searchValue="+searchValue)
+    }*/
+
+    private fun opencloseSearch(isopen:Boolean, query:String){
+        Log.w("T", "opencloseSearch isopen=$isopen")
+        if(isopen) {
+            searchItem?.expandActionView()
+            searchView.setQuery(query, false)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_search, menu)
-        val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
+        val _searchItem = menu?.findItem(R.id.action_search)
+        searchItem = _searchItem
+        searchView = searchItem?.actionView as SearchView
         searchView.queryHint = "строка поиска"
-        if(isSearchOpen)
-            searchItem.expandActionView()
-        searchView.setQuery(searchValue, false)
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+
+
+        _searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                isSearchOpen = true
+                Log.w("T", "onMenuItemActionExpand item=$item")
+                viewModel.handleSearchMode(true)
+                //isSearchOpen = true
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                isSearchOpen = false
+                Log.w("T", "onMenuItemActionCollapse item=$item")
+                viewModel.handleSearchMode(false)
+                //isSearchOpen = false
                 return true
             }
         })
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                Log.w("T", "setOnQueryTextListener")
                 viewModel.handleSearch(p0)
-                searchValue = p0?:""
+           //     searchValue = p0?:""
                 return true
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
+                Log.w("T", "onQueryTextChange")
                 viewModel.handleSearch(p0)
-                searchValue = p0?:""
+             //   searchValue = p0?:""
                 return true
             }
 
@@ -110,7 +126,7 @@ class RootActivity : AppCompatActivity() {
             is Notify.ActionMessage -> {
                 snackbar.setActionTextColor(getColor(R.color.color_accent_dark))
                 snackbar.setAction(notify.actionLabel){
-                    notify.actionHandler?.invoke()
+                    notify.actionHandler.invoke()
                 }
             }
             is Notify.ErrorMessage ->{
@@ -128,6 +144,8 @@ class RootActivity : AppCompatActivity() {
     }
 
     private fun renderUi(data: ArticleState) {
+        Log.w("T", "renderUi isBookmark= ${data.isBookmark} isLike= ${data.isLike} isSearch= ${data.isSearch} searchQuery= ${data.searchQuery}")
+        opencloseSearch(data.isSearch, data.searchQuery?:"")
         btn_settings.isChecked = data.isShowMenu
         if(data.isShowMenu) submenu.open() else submenu.close()
 
