@@ -124,25 +124,13 @@ class ArticleViewModel(private val articleId:String) : BaseViewModel<ArticleStat
         updateState { it.copy(isShowMenu = !it.isShowMenu) }
     }
 
-    override fun handleSearchMode(_isSearch: Boolean) {
-        val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
-        Log.w("T", "handleSearchMode isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
-        repository.updateArticlePersonalInfo(info.copy(isSearch = _isSearch))
-        /*val msg:Notify = Notify.ErrorMessage("Search mode is not implemented","OK",null)
-        notify(msg)*/
-
+    override fun handleSearchMode(issearch: Boolean) {
+        updateState { it.copy(isSearch = issearch) }
     }
 
     override fun handleSearch(query: String?) {
-
-        val info :ArticlePersonalInfo = currentState.toArticlePersonalInfo()
-        Log.w("T", "handleSearch isBookmark= ${info.isBookmark} isLike= ${info.isLike} isSearch= ${info.isSearch} searchQuery= ${info.searchQuery}")
-        repository.updateArticlePersonalInfo(info.copy(searchQuery = query))
-
-        /*val msg:Notify = Notify.ErrorMessage("Search is not implemented","OK",null)
-        notify(msg)*/
+         updateState { it.copy(searchQuery = query) }
     }
-
 
 }
 
